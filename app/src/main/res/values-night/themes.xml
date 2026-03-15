@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Dark-mode overrides — Material3 DayNight handles most tokens automatically;
+         override individual color tokens here if your brand requires specific dark values. -->
+    <style name="Theme.CryptoApp" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="colorPrimary">#90CAF9</item>
+        <item name="colorOnPrimary">#003A6E</item>
+        <item name="colorPrimaryContainer">#004B8E</item>
+        <item name="android:colorBackground">#1C1B1F</item>
+        <item name="colorSurface">#1C1B1F</item>
+        <item name="colorOnSurface">#E6E1E5</item>
+    </style>
+
+</resources>
