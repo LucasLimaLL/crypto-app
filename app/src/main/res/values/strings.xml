@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- App -->
+    <string name="app_name">Cryptogram</string>
+
+    <!-- Navigation -->
+    <string name="title_home">Home</string>
+    <string name="title_login">Login</string>
+
+    <!-- Login screen -->
+    <string name="hint_username">Username</string>
+    <string name="hint_password">Password</string>
+    <string name="action_login">Sign In</string>
+    <string name="error_invalid_credentials">Invalid username or password. Please try again.</string>
+</resources>
