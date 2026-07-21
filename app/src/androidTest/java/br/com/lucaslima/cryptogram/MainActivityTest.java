@@ -12,12 +12,6 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-/**
- * Instrumented test for {@link MainActivity}.
- *
- * <p>Runs on a physical or emulated Android device. Add more Espresso interactions
- * here as the UI stabilises.
- */
 @RunWith(AndroidJUnit4.class)
 public class MainActivityTest {
 

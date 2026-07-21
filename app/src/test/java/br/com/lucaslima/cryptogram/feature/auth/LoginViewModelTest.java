@@ -2,7 +2,9 @@ package br.com.lucaslima.cryptogram.feature.auth;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -29,6 +31,11 @@ public class LoginViewModelTest {
     public void setUp() {
         mockUseCase = mock(LoginUseCase.class);
         viewModel = new LoginViewModel(mockUseCase);
+    }
+
+    @Test
+    public void initialState_isNull() {
+        assertNull(viewModel.getLoginState().getValue());
     }
 
     @Test
@@ -67,5 +74,28 @@ public class LoginViewModelTest {
         assertNotNull(state);
         assertTrue(state instanceof LoginResult.Error);
         assertEquals("Service unavailable", ((LoginResult.Error) state).message());
+    }
+
+    @Test
+    public void login_calledTwice_lastResultWins() {
+        when(mockUseCase.execute(any(), any()))
+                .thenReturn(new LoginResult.Success("first"))
+                .thenReturn(new LoginResult.Error("second call error"));
+
+        viewModel.login("user", "pass");
+        viewModel.login("user", "pass");
+
+        LoginResult state = viewModel.getLoginState().getValue();
+        assertTrue(state instanceof LoginResult.Error);
+    }
+
+    @Test
+    public void login_usernamePreservedInSuccessResult() {
+        when(mockUseCase.execute(anyString(), anyString()))
+                .thenReturn(new LoginResult.Success("uniqueName"));
+
+        viewModel.login("uniqueName", "pass");
+
+        assertEquals("uniqueName", ((LoginResult.Success) viewModel.getLoginState().getValue()).username());
     }
 }

@@ -61,8 +61,14 @@ tasks.register<Checkstyle>("checkstyleTest") {
     classpath = files()
 }
 
+tasks.register<Checkstyle>("checkstyleAndroidTest") {
+    source("src/androidTest/java")
+    include("**/*.java")
+    classpath = files()
+}
+
 tasks.named("check") {
-    dependsOn("checkstyleMain", "checkstyleTest")
+    dependsOn("checkstyleMain", "checkstyleTest", "checkstyleAndroidTest")
 }
 
 dependencies {
