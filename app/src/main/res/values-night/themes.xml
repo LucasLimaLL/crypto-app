@@ -1,15 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <!-- Dark-mode overrides — Material3 DayNight handles most tokens automatically;
-         override individual color tokens here if your brand requires specific dark values. -->
     <style name="Theme.CryptoApp" parent="Theme.Material3.DayNight.NoActionBar">
-        <item name="colorPrimary">#90CAF9</item>
-        <item name="colorOnPrimary">#003A6E</item>
-        <item name="colorPrimaryContainer">#004B8E</item>
-        <item name="android:colorBackground">#1C1B1F</item>
-        <item name="colorSurface">#1C1B1F</item>
-        <item name="colorOnSurface">#E6E1E5</item>
+        <item name="colorPrimary">@color/primary</item>
+        <item name="colorOnPrimary">@color/on_primary</item>
+        <item name="colorPrimaryContainer">@color/primary_container</item>
+        <item name="colorSecondary">@color/secondary</item>
+        <item name="colorOnSecondary">@color/on_secondary</item>
+        <item name="android:colorBackground">@color/background</item>
+        <item name="colorSurface">@color/surface</item>
+        <item name="colorOnSurface">@color/on_surface</item>
+        <item name="colorError">@color/error</item>
+        <item name="colorOnError">@color/on_error</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:windowLightStatusBar">false</item>
     </style>
 
 </resources>

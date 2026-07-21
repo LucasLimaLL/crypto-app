@@ -12,4 +12,69 @@
     <string name="hint_password">Password</string>
     <string name="action_login">Sign In</string>
     <string name="error_invalid_credentials">Invalid username or password. Please try again.</string>
+
+    <!-- Home header -->
+    <string name="home_brand_title">CRIPTOGRAMA</string>
+    <string name="home_brand_subtitle">Escolha como quer jogar</string>
+    <string name="home_profile_content_description">Abrir perfil</string>
+
+    <!-- Daily challenge -->
+    <string name="home_daily_title">Desafio Diário</string>
+    <string name="home_daily_streak">Sequência: 0 dias 🔥</string>
+    <string name="home_daily_credits">+2 créditos</string>
+
+    <!-- Modes -->
+    <string name="home_mode_classic">Clássico</string>
+    <string name="home_mode_timed">VS ⏳</string>
+    <string name="home_mode_theme">Tema</string>
+
+    <!-- Section headers -->
+    <string name="home_section_classic">ESCOLHA A DIFICULDADE</string>
+    <string name="home_section_timed">MODO CONTRA O RELÓGIO</string>
+    <string name="home_section_timed_description">Menos tempo = mais difícil. Complete antes do tempo acabar!</string>
+    <string name="home_section_theme">ESCOLHA UM TEMA</string>
+    <string name="home_section_theme_description">Puzzles organizados por categoria temática.</string>
+
+    <!-- Classic cards -->
+    <string name="home_easy_title">Fácil</string>
+    <string name="home_easy_stars">★</string>
+    <string name="home_easy_meta">8 palavras • Sem limite</string>
+    <string name="home_medium_title">Médio</string>
+    <string name="home_medium_stars">★★</string>
+    <string name="home_medium_meta">12 palavras • Sem limite</string>
+    <string name="home_hard_title">Difícil</string>
+    <string name="home_hard_stars">★★★</string>
+    <string name="home_hard_meta">16 palavras • Sem limite</string>
+
+    <!-- Timed cards -->
+    <string name="home_timed_hard_title">3 min</string>
+    <string name="home_timed_hard_meta">◔ Dificuldade: Difícil</string>
+    <string name="home_timed_hard_credits">+8 créditos</string>
+    <string name="home_timed_medium_title">5 min</string>
+    <string name="home_timed_medium_meta">◔ Dificuldade: Médio</string>
+    <string name="home_timed_medium_credits">+5 créditos</string>
+    <string name="home_timed_easy_title">10 min</string>
+    <string name="home_timed_easy_meta">◔ Dificuldade: Fácil</string>
+    <string name="home_timed_easy_credits">+3 créditos</string>
+
+    <!-- Categories -->
+    <string name="home_category_nature_title">Natureza</string>
+    <string name="home_category_nature_subtitle">Plantas, animais e ambiente</string>
+    <string name="home_category_objects_title">Objetos</string>
+    <string name="home_category_objects_subtitle">Utensílios e ferramentas</string>
+    <string name="home_category_professions_title">Profissões</string>
+    <string name="home_category_professions_subtitle">Trabalhos e ocupações</string>
+    <string name="home_category_sports_title">Esportes</string>
+    <string name="home_category_sports_subtitle">Modalidades e jogos</string>
+    <string name="home_category_food_title">Comida</string>
+    <string name="home_category_food_subtitle">Pratos, ingredientes e cozinha</string>
+    <string name="home_category_science_title">Ciência</string>
+    <string name="home_category_science_subtitle">Descobertas e laboratório</string>
+
+    <!-- Interaction copy -->
+    <string name="home_action_daily">Abrir Desafio Diário</string>
+    <string name="home_action_profile">Abrir perfil</string>
+    <string name="home_action_classic">Iniciar modo clássico: %1$s</string>
+    <string name="home_action_timed">Iniciar Contra o Relógio: %1$s</string>
+    <string name="home_action_category">Tema selecionado: %1$s</string>
 </resources>

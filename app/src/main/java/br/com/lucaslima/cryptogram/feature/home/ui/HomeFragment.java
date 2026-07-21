@@ -1,29 +1,29 @@
 package br.com.lucaslima.cryptogram.feature.home.ui;
 
+import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.GridLayoutManager;
 
+import com.google.android.material.button.MaterialButton;
+
+import br.com.lucaslima.cryptogram.R;
 import br.com.lucaslima.cryptogram.databinding.FragmentHomeBinding;
-import br.com.lucaslima.cryptogram.feature.home.domain.PuzzleResult;
 
-/**
- * Fragment for the Home / game-board screen.
- *
- * <p>Observes {@link HomeViewModel#getPuzzleState()} and renders the appropriate
- * UI state (loading spinner, puzzle text, or error message). All business logic
- * stays in the ViewModel; the Fragment only translates state into views.
- */
 public class HomeFragment extends Fragment {
 
     private FragmentHomeBinding binding;
     private HomeViewModel viewModel;
+    private ThemeCategoryAdapter categoryAdapter;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -37,38 +37,105 @@ public class HomeFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         viewModel = new ViewModelProvider(this).get(HomeViewModel.class);
-        observeViewModel();
-        viewModel.loadPuzzle();
+        setupRecyclerView();
+        setupInteractions();
+        observeUiState();
     }
 
-    private void observeViewModel() {
-        viewModel.getPuzzleState().observe(getViewLifecycleOwner(), result -> {
-            switch (result) {
-                case PuzzleResult.Loading ignored -> showLoading();
-                case PuzzleResult.Success success  -> showPuzzle(success.puzzle().encryptedText());
-                case PuzzleResult.Error error      -> showError(error.message());
-            }
+    private void setupRecyclerView() {
+        categoryAdapter = new ThemeCategoryAdapter(item -> {
+            viewModel.selectCategory(item.getId());
+            showToast(getString(R.string.home_action_category, getString(item.getTitleRes())));
         });
+        binding.recyclerCategories.setLayoutManager(new GridLayoutManager(requireContext(), 2));
+        binding.recyclerCategories.setAdapter(categoryAdapter);
+        binding.recyclerCategories.setNestedScrollingEnabled(false);
     }
 
-    private void showLoading() {
-        binding.progressBar.setVisibility(View.VISIBLE);
-        binding.textPuzzle.setVisibility(View.GONE);
-        binding.textError.setVisibility(View.GONE);
+    private void setupInteractions() {
+        binding.buttonProfile.setOnClickListener(v -> showToast(getString(R.string.home_action_profile)));
+        binding.cardDailyChallenge.setOnClickListener(v -> showToast(getString(R.string.home_action_daily)));
+
+        binding.buttonModeClassic.setOnClickListener(v -> viewModel.selectMode(HomeMode.CLASSIC));
+        binding.buttonModeTimed.setOnClickListener(v -> viewModel.selectMode(HomeMode.TIMED));
+        binding.buttonModeTheme.setOnClickListener(v -> viewModel.selectMode(HomeMode.THEME));
+
+        binding.cardClassicEasy.setOnClickListener(v ->
+                showToast(getString(R.string.home_action_classic, getString(R.string.home_easy_title))));
+        binding.cardClassicMedium.setOnClickListener(v ->
+                showToast(getString(R.string.home_action_classic, getString(R.string.home_medium_title))));
+        binding.cardClassicHard.setOnClickListener(v ->
+                showToast(getString(R.string.home_action_classic, getString(R.string.home_hard_title))));
+
+        binding.cardTimedHard.setOnClickListener(v ->
+                showToast(getString(R.string.home_action_timed, getString(R.string.home_timed_hard_title))));
+        binding.cardTimedMedium.setOnClickListener(v ->
+                showToast(getString(R.string.home_action_timed, getString(R.string.home_timed_medium_title))));
+        binding.cardTimedEasy.setOnClickListener(v ->
+                showToast(getString(R.string.home_action_timed, getString(R.string.home_timed_easy_title))));
     }
 
-    private void showPuzzle(String encryptedText) {
-        binding.progressBar.setVisibility(View.GONE);
-        binding.textError.setVisibility(View.GONE);
-        binding.textPuzzle.setVisibility(View.VISIBLE);
-        binding.textPuzzle.setText(encryptedText);
+    private void observeUiState() {
+        viewModel.getUiState().observe(getViewLifecycleOwner(), this::render);
     }
 
-    private void showError(String message) {
-        binding.progressBar.setVisibility(View.GONE);
-        binding.textPuzzle.setVisibility(View.GONE);
-        binding.textError.setVisibility(View.VISIBLE);
-        binding.textError.setText(message);
+    private void render(HomeUiState state) {
+        HomeMode selectedMode = state.getSelectedMode();
+        updateModeButtons(selectedMode);
+        updateVisibleSection(selectedMode);
+        categoryAdapter.submitList(state.getCategories(), state.getSelectedCategoryId());
+    }
+
+    private void updateModeButtons(HomeMode selectedMode) {
+        applyModeStyle(binding.buttonModeClassic, selectedMode == HomeMode.CLASSIC);
+        applyModeStyle(binding.buttonModeTimed, selectedMode == HomeMode.TIMED);
+        applyModeStyle(binding.buttonModeTheme, selectedMode == HomeMode.THEME);
+    }
+
+    private void updateVisibleSection(HomeMode selectedMode) {
+        switch (selectedMode) {
+            case CLASSIC:
+                binding.textSectionLabel.setText(R.string.home_section_classic);
+                binding.textSectionDescription.setVisibility(View.GONE);
+                binding.containerClassicMode.setVisibility(View.VISIBLE);
+                binding.containerTimedMode.setVisibility(View.GONE);
+                binding.containerThemeMode.setVisibility(View.GONE);
+                break;
+            case TIMED:
+                binding.textSectionLabel.setText(R.string.home_section_timed);
+                binding.textSectionDescription.setText(R.string.home_section_timed_description);
+                binding.textSectionDescription.setVisibility(View.VISIBLE);
+                binding.containerClassicMode.setVisibility(View.GONE);
+                binding.containerTimedMode.setVisibility(View.VISIBLE);
+                binding.containerThemeMode.setVisibility(View.GONE);
+                break;
+            case THEME:
+                binding.textSectionLabel.setText(R.string.home_section_theme);
+                binding.textSectionDescription.setText(R.string.home_section_theme_description);
+                binding.textSectionDescription.setVisibility(View.VISIBLE);
+                binding.containerClassicMode.setVisibility(View.GONE);
+                binding.containerTimedMode.setVisibility(View.GONE);
+                binding.containerThemeMode.setVisibility(View.VISIBLE);
+                break;
+        }
+    }
+
+    private void applyModeStyle(MaterialButton button, boolean selected) {
+        int backgroundColor = ContextCompat.getColor(
+                requireContext(),
+                selected ? R.color.home_mode_selected_bg : android.R.color.transparent
+        );
+        int textColor = ContextCompat.getColor(
+                requireContext(),
+                selected ? R.color.home_mode_selected_text : R.color.home_mode_unselected_text
+        );
+
+        button.setBackgroundTintList(ColorStateList.valueOf(backgroundColor));
+        button.setTextColor(textColor);
+    }
+
+    private void showToast(String message) {
+        Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show();
     }
 
     @Override

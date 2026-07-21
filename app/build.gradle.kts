@@ -1,5 +1,6 @@
 plugins {
     alias(libs.plugins.android.application)
+    checkstyle
 }
 
 android {
@@ -42,6 +43,28 @@ android {
     }
 }
 
+checkstyle {
+    toolVersion = "10.21.4"
+    configFile = file("${rootDir}/config/checkstyle/checkstyle.xml")
+    maxWarnings = 0
+}
+
+tasks.register<Checkstyle>("checkstyleMain") {
+    source("src/main/java")
+    include("**/*.java")
+    classpath = files()
+}
+
+tasks.register<Checkstyle>("checkstyleTest") {
+    source("src/test/java")
+    include("**/*.java")
+    classpath = files()
+}
+
+tasks.named("check") {
+    dependsOn("checkstyleMain", "checkstyleTest")
+}
+
 dependencies {
     implementation(libs.appcompat)
     implementation(libs.material)
@@ -52,6 +75,7 @@ dependencies {
     implementation(libs.lifecycle.livedata)
     implementation(libs.activity)
     implementation(libs.fragment)
+    implementation(libs.recyclerview)
 
     testImplementation(libs.junit)
     testImplementation(libs.mockito.core)

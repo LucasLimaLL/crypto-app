@@ -1,17 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Brand colors -->
-    <color name="primary">#1565C0</color>
-    <color name="on_primary">#FFFFFF</color>
-    <color name="primary_container">#D6E4FF</color>
-    <color name="secondary">#455A64</color>
-    <color name="on_secondary">#FFFFFF</color>
-    <color name="background">#FAFAFA</color>
-    <color name="surface">#FFFFFF</color>
-    <color name="on_surface">#1C1B1F</color>
-    <color name="error">#B00020</color>
+    <!-- Theme tokens -->
+    <color name="primary">#FFC83D</color>
+    <color name="on_primary">#1A2340</color>
+    <color name="primary_container">#2A365A</color>
+    <color name="secondary">#9FB2D8</color>
+    <color name="on_secondary">#0F1830</color>
+    <color name="background">#111A34</color>
+    <color name="surface">#1B2745</color>
+    <color name="on_surface">#FFFFFF</color>
+    <color name="error">#E44356</color>
     <color name="on_error">#FFFFFF</color>
 
-    <!-- Legacy launcher colors (required by mipmap adaptive icons) -->
+    <!-- Home screen palette -->
+    <color name="home_background">#111A34</color>
+    <color name="home_surface_alt">#1D2948</color>
+    <color name="home_surface_alt_2">#233252</color>
+    <color name="home_border_soft">#3A4A6C</color>
+    <color name="home_text_primary">#FFFFFF</color>
+    <color name="home_text_secondary">#9CB0D6</color>
+    <color name="home_text_tertiary">#6F86B2</color>
+    <color name="home_gold">#FFC93C</color>
+    <color name="home_gold_deep">#E3AC1A</color>
+    <color name="home_daily_card">#5E4632</color>
+    <color name="home_daily_stroke">#C58B2C</color>
+    <color name="home_daily_icon_bg">#796041</color>
+    <color name="home_mode_selected_bg">#F6F5F3</color>
+    <color name="home_mode_selected_text">#1A2340</color>
+    <color name="home_mode_unselected_text">#9CB0D6</color>
+    <color name="home_theme_card_bg">#2B3A59</color>
+    <color name="home_theme_card_selected_bg">#33466A</color>
+    <color name="home_theme_card_stroke">#4E617F</color>
+    <color name="home_theme_card_selected_stroke">#FFC93C</color>
+    <color name="home_theme_icon">#DCE7FF</color>
+
+    <!-- Option cards -->
+    <color name="home_easy_bg">#E6FBF5</color>
+    <color name="home_easy_fg">#008C72</color>
+    <color name="home_medium_bg">#FFF5DD</color>
+    <color name="home_medium_fg">#DB7A00</color>
+    <color name="home_hard_bg">#FFE8EC</color>
+    <color name="home_hard_fg">#D53A48</color>
+    <color name="home_card_text_dark">#2D3C60</color>
+    <color name="home_card_text_light">#62779F</color>
+    <color name="home_badge_bg">#FFE8A1</color>
+    <color name="home_badge_text">#BB6B00</color>
+
+    <!-- Timer indicators -->
+    <color name="home_timer_red">#E04B66</color>
+    <color name="home_timer_yellow">#E6B948</color>
+    <color name="home_timer_green">#4CCB84</color>
+
+    <!-- Legacy launcher color -->
     <color name="ic_launcher_background">#1565C0</color>
 </resources>

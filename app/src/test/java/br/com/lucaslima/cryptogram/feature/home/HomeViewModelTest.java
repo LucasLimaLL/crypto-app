@@ -2,19 +2,17 @@ package br.com.lucaslima.cryptogram.feature.home;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule;
 
-import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
-import br.com.lucaslima.cryptogram.feature.home.domain.GetPuzzleUseCase;
-import br.com.lucaslima.cryptogram.feature.home.domain.Puzzle;
-import br.com.lucaslima.cryptogram.feature.home.domain.PuzzleResult;
+import java.util.Arrays;
+
+import br.com.lucaslima.cryptogram.feature.home.ui.HomeCategoryItem;
+import br.com.lucaslima.cryptogram.feature.home.ui.HomeMode;
+import br.com.lucaslima.cryptogram.feature.home.ui.HomeUiState;
 import br.com.lucaslima.cryptogram.feature.home.ui.HomeViewModel;
 
 public class HomeViewModelTest {
@@ -22,37 +20,45 @@ public class HomeViewModelTest {
     @Rule
     public InstantTaskExecutorRule instantTaskExecutorRule = new InstantTaskExecutorRule();
 
-    private GetPuzzleUseCase mockUseCase;
-    private HomeViewModel viewModel;
+    @Test
+    public void defaultState_startsInClassicModeAndSelectsFirstCategory() {
+        HomeViewModel viewModel = new HomeViewModel(Arrays.asList(
+                new HomeCategoryItem("nature", "N", 0, 0),
+                new HomeCategoryItem("sports", "S", 0, 0)
+        ));
 
-    @Before
-    public void setUp() {
-        mockUseCase = mock(GetPuzzleUseCase.class);
-        viewModel = new HomeViewModel(mockUseCase);
+        HomeUiState state = viewModel.getUiState().getValue();
+
+        assertNotNull(state);
+        assertEquals(HomeMode.CLASSIC, state.getSelectedMode());
+        assertEquals("nature", state.getSelectedCategoryId());
+        assertEquals(2, state.getCategories().size());
     }
 
     @Test
-    public void loadPuzzle_success_emitsPuzzle() {
-        Puzzle puzzle = new Puzzle("1", "ENCRYPTED", "Hint", "SOLUTION");
-        when(mockUseCase.execute()).thenReturn(new PuzzleResult.Success(puzzle));
+    public void selectMode_updatesSelectedMode() {
+        HomeViewModel viewModel = new HomeViewModel(Arrays.asList(
+                new HomeCategoryItem("nature", "N", 0, 0)
+        ));
 
-        viewModel.loadPuzzle();
+        viewModel.selectMode(HomeMode.THEME);
 
-        PuzzleResult state = viewModel.getPuzzleState().getValue();
+        HomeUiState state = viewModel.getUiState().getValue();
         assertNotNull(state);
-        assertTrue(state instanceof PuzzleResult.Success);
-        assertEquals("ENCRYPTED", ((PuzzleResult.Success) state).puzzle().encryptedText());
+        assertEquals(HomeMode.THEME, state.getSelectedMode());
     }
 
     @Test
-    public void loadPuzzle_error_emitsError() {
-        when(mockUseCase.execute()).thenReturn(new PuzzleResult.Error("Network failure"));
+    public void selectCategory_keepsNewCategoryIdInState() {
+        HomeViewModel viewModel = new HomeViewModel(Arrays.asList(
+                new HomeCategoryItem("nature", "N", 0, 0),
+                new HomeCategoryItem("sports", "S", 0, 0)
+        ));
 
-        viewModel.loadPuzzle();
+        viewModel.selectCategory("sports");
 
-        PuzzleResult state = viewModel.getPuzzleState().getValue();
+        HomeUiState state = viewModel.getUiState().getValue();
         assertNotNull(state);
-        assertTrue(state instanceof PuzzleResult.Error);
-        assertEquals("Network failure", ((PuzzleResult.Error) state).message());
+        assertEquals("sports", state.getSelectedCategoryId());
     }
 }

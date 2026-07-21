@@ -15,12 +15,6 @@ import br.com.lucaslima.cryptogram.R;
 import br.com.lucaslima.cryptogram.databinding.FragmentLoginBinding;
 import br.com.lucaslima.cryptogram.feature.auth.domain.LoginResult;
 
-/**
- * Fragment for the Login screen.
- *
- * <p>Collects username/password, delegates authentication to {@link LoginViewModel},
- * and navigates to the Home screen on success.
- */
 public class LoginFragment extends Fragment {
 
     private FragmentLoginBinding binding;
@@ -44,15 +38,15 @@ public class LoginFragment extends Fragment {
 
     private void observeViewModel() {
         viewModel.getLoginState().observe(getViewLifecycleOwner(), result -> {
-            switch (result) {
-                case LoginResult.Success ignored ->
-                        Navigation.findNavController(requireView())
-                                .navigate(R.id.action_loginFragment_to_homeFragment);
-                case LoginResult.InvalidCredentials ignored ->
-                        binding.textError.setText(R.string.error_invalid_credentials);
-                case LoginResult.Error error ->
-                        binding.textError.setText(error.message());
+            if (result instanceof LoginResult.Success) {
+                Navigation.findNavController(requireView())
+                        .navigate(R.id.action_loginFragment_to_homeFragment);
+            } else if (result instanceof LoginResult.InvalidCredentials) {
+                binding.textError.setText(R.string.error_invalid_credentials);
+            } else if (result instanceof LoginResult.Error error) {
+                binding.textError.setText(error.message());
             }
+
             binding.textError.setVisibility(
                     result instanceof LoginResult.Success ? View.GONE : View.VISIBLE);
         });
