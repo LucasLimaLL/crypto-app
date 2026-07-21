@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.android.application)
     checkstyle
+    jacoco
 }
 
 android {
@@ -30,6 +31,7 @@ android {
             isMinifyEnabled = false
             applicationIdSuffix = ".debug"
             isDebuggable = true
+            enableUnitTestCoverage = true
         }
     }
 
@@ -69,6 +71,59 @@ tasks.register<Checkstyle>("checkstyleAndroidTest") {
 
 tasks.named("check") {
     dependsOn("checkstyleMain", "checkstyleTest", "checkstyleAndroidTest")
+}
+
+jacoco {
+    toolVersion = "0.8.12"
+}
+
+tasks.register<JacocoReport>("jacocoDebugTestReport") {
+    dependsOn("testDebugUnitTest")
+    reports {
+        xml.required.set(true)
+        html.required.set(true)
+    }
+    sourceDirectories.setFrom(files("src/main/java"))
+    classDirectories.setFrom(
+        fileTree("build/intermediates/javac/debug/compileDebugJavaWithJavac/classes") {
+            exclude(
+                "**/R.class", "**/R$*.class", "**/BuildConfig.*",
+                "**/Manifest*.*", "**/*Test*.*", "android/**/*.*"
+            )
+        }
+    )
+    executionData.setFrom(
+        fileTree(layout.buildDirectory) {
+            include("outputs/unit_test_code_coverage/debugUnitTest/testDebugUnitTest.exec")
+        }
+    )
+}
+
+tasks.register<JacocoCoverageVerification>("jacocoDebugTestCoverageVerification") {
+    dependsOn("jacocoDebugTestReport")
+    sourceDirectories.setFrom(files("src/main/java"))
+    classDirectories.setFrom(
+        fileTree("build/intermediates/javac/debug/compileDebugJavaWithJavac/classes") {
+            exclude(
+                "**/R.class", "**/R$*.class", "**/BuildConfig.*",
+                "**/Manifest*.*", "**/*Test*.*", "android/**/*.*"
+            )
+        }
+    )
+    executionData.setFrom(
+        fileTree(layout.buildDirectory) {
+            include("outputs/unit_test_code_coverage/debugUnitTest/testDebugUnitTest.exec")
+        }
+    )
+    violationRules {
+        rule {
+            limit { counter = "INSTRUCTION"; value = "COVEREDRATIO"; minimum = "0.97".toBigDecimal() }
+            limit { counter = "LINE";        value = "COVEREDRATIO"; minimum = "0.97".toBigDecimal() }
+            limit { counter = "BRANCH";      value = "COVEREDRATIO"; minimum = "0.90".toBigDecimal() }
+            limit { counter = "METHOD";      value = "COVEREDRATIO"; minimum = "0.97".toBigDecimal() }
+            limit { counter = "CLASS";       value = "COVEREDRATIO"; minimum = "0.97".toBigDecimal() }
+        }
+    }
 }
 
 dependencies {
