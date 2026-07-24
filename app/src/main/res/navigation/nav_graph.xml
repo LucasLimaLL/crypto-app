@@ -22,6 +22,34 @@
         android:id="@+id/homeFragment"
         android:name="br.com.lucaslima.cryptogram.feature.home.ui.HomeFragment"
         android:label="@string/title_home"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_home">
+
+        <action
+            android:id="@+id/action_homeFragment_to_puzzleFragment"
+            app:destination="@id/puzzleFragment" />
+
+        <action
+            android:id="@+id/action_homeFragment_to_profileFragment"
+            app:destination="@id/profileFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/puzzleFragment"
+        android:name="br.com.lucaslima.cryptogram.feature.puzzle.ui.PuzzleFragment"
+        android:label="Puzzle"
+        tools:layout="@layout/fragment_puzzle" />
+
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="br.com.lucaslima.cryptogram.feature.profile.ui.ProfileFragment"
+        android:label="Perfil"
+        tools:layout="@layout/fragment_profile">
+
+        <action
+            android:id="@+id/action_profileFragment_to_loginFragment"
+            app:destination="@id/loginFragment"
+            app:popUpTo="@id/homeFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
 
 </navigation>

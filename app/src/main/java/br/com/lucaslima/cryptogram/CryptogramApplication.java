@@ -1,15 +1,14 @@
 package br.com.lucaslima.cryptogram;
 
 import android.app.Application;
-import android.util.Log;
+
+import androidx.appcompat.app.AppCompatDelegate;
 
 public class CryptogramApplication extends Application {
-
-    private static final String TAG = "CryptogramApp";
 
     @Override
     public void onCreate() {
         super.onCreate();
-        Log.d(TAG, "Application created");
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
     }
 }

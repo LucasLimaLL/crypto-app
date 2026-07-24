@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/home_background">
+    android:background="@color/home_background"
+    android:fitsSystemWindows="true">
 
     <androidx.core.widget.NestedScrollView
         android:id="@+id/scroll_home"
@@ -69,6 +70,21 @@
                     app:layout_constraintTop_toTopOf="@id/text_brand_title" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <TextView
+                android:id="@+id/text_credits_header"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/bg_pill"
+                android:backgroundTint="@color/home_surface_alt"
+                android:paddingStart="12dp"
+                android:paddingTop="5dp"
+                android:paddingEnd="12dp"
+                android:paddingBottom="5dp"
+                android:fontFamily="sans-serif-medium"
+                android:textColor="@color/home_gold"
+                android:textSize="13sp" />
 
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/card_daily_challenge"

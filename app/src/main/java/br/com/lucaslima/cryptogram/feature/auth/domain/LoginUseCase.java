@@ -12,10 +12,10 @@ public class LoginUseCase {
 
     public LoginResult execute(String username, String password) {
         if (username == null || username.isBlank()) {
-            return new LoginResult.Error("Username must not be empty.");
+            return new LoginResult.Error("Usuário não pode estar vazio.");
         }
         if (password == null || password.isBlank()) {
-            return new LoginResult.Error("Password must not be empty.");
+            return new LoginResult.Error("Senha não pode estar vazia.");
         }
         try {
             return authRepository.login(username, password);

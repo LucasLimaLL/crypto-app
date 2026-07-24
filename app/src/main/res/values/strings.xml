@@ -8,9 +8,10 @@
     <string name="title_login">Login</string>
 
     <!-- Login screen -->
-    <string name="hint_username">Username</string>
-    <string name="hint_password">Password</string>
-    <string name="action_login">Sign In</string>
+    <string name="login_subtitle">Decifre. Aprenda. Vença.</string>
+    <string name="hint_username">Usuário</string>
+    <string name="hint_password">Senha</string>
+    <string name="action_login">Entrar</string>
     <string name="error_invalid_credentials">Invalid username or password. Please try again.</string>
 
     <!-- Home header -->
@@ -77,4 +78,15 @@
     <string name="home_action_classic">Iniciar modo clássico: %1$s</string>
     <string name="home_action_timed">Iniciar Contra o Relógio: %1$s</string>
     <string name="home_action_category">Tema selecionado: %1$s</string>
+
+    <!-- Credits and puzzle -->
+    <string name="home_credits_balance">🏆 %d créditos</string>
+    <string name="puzzle_credits_reward">+%d créditos</string>
+    <string name="puzzle_complete_credits">+%d créditos</string>
+    <string name="puzzle_continue">Continuar</string>
+    <string name="profile_title">Perfil</string>
+    <string name="profile_credits_label">CRÉDITOS</string>
+    <string name="profile_puzzles_label">Puzzles</string>
+    <string name="profile_streak_label">Sequência</string>
+    <string name="profile_action_logout">Sair</string>
 </resources>

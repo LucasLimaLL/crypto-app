@@ -13,6 +13,7 @@ import androidx.navigation.Navigation;
 
 import br.com.lucaslima.cryptogram.R;
 import br.com.lucaslima.cryptogram.databinding.FragmentLoginBinding;
+import br.com.lucaslima.cryptogram.feature.auth.data.UserSession;
 import br.com.lucaslima.cryptogram.feature.auth.domain.LoginResult;
 
 public class LoginFragment extends Fragment {
@@ -38,7 +39,8 @@ public class LoginFragment extends Fragment {
 
     private void observeViewModel() {
         viewModel.getLoginState().observe(getViewLifecycleOwner(), result -> {
-            if (result instanceof LoginResult.Success) {
+            if (result instanceof LoginResult.Success success) {
+                UserSession.getInstance().setUsername(success.username());
                 Navigation.findNavController(requireView())
                         .navigate(R.id.action_loginFragment_to_homeFragment);
             } else if (result instanceof LoginResult.InvalidCredentials) {

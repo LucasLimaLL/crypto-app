@@ -5,19 +5,20 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.GridLayoutManager;
 
 import com.google.android.material.button.MaterialButton;
 
 import br.com.lucaslima.cryptogram.R;
 import br.com.lucaslima.cryptogram.databinding.FragmentHomeBinding;
+import br.com.lucaslima.cryptogram.feature.credits.CreditsManager;
 
 public class HomeFragment extends Fragment {
 
@@ -42,10 +43,20 @@ public class HomeFragment extends Fragment {
         observeUiState();
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (binding != null) {
+            CreditsManager cm = CreditsManager.getInstance(requireContext());
+            binding.textCreditsHeader.setText("🏆 " + cm.getBalance() + " créditos");
+            binding.textDailyStreak.setText("Sequência: " + cm.getStreak() + " dias 🔥");
+        }
+    }
+
     private void setupRecyclerView() {
         categoryAdapter = new ThemeCategoryAdapter(item -> {
             viewModel.selectCategory(item.getId());
-            showToast(getString(R.string.home_action_category, getString(item.getTitleRes())));
+            navigateToPuzzle(4, getString(R.string.home_mode_theme) + " · " + getString(item.getTitleRes()));
         });
         binding.recyclerCategories.setLayoutManager(new GridLayoutManager(requireContext(), 2));
         binding.recyclerCategories.setAdapter(categoryAdapter);
@@ -53,26 +64,36 @@ public class HomeFragment extends Fragment {
     }
 
     private void setupInteractions() {
-        binding.buttonProfile.setOnClickListener(v -> showToast(getString(R.string.home_action_profile)));
-        binding.cardDailyChallenge.setOnClickListener(v -> showToast(getString(R.string.home_action_daily)));
+        binding.buttonProfile.setOnClickListener(v ->
+                Navigation.findNavController(v).navigate(R.id.action_homeFragment_to_profileFragment));
+        binding.cardDailyChallenge.setOnClickListener(v ->
+                navigateToPuzzle(2, getString(R.string.home_daily_title)));
 
         binding.buttonModeClassic.setOnClickListener(v -> viewModel.selectMode(HomeMode.CLASSIC));
         binding.buttonModeTimed.setOnClickListener(v -> viewModel.selectMode(HomeMode.TIMED));
         binding.buttonModeTheme.setOnClickListener(v -> viewModel.selectMode(HomeMode.THEME));
 
         binding.cardClassicEasy.setOnClickListener(v ->
-                showToast(getString(R.string.home_action_classic, getString(R.string.home_easy_title))));
+                navigateToPuzzle(3, "Clássico · " + getString(R.string.home_easy_title)));
         binding.cardClassicMedium.setOnClickListener(v ->
-                showToast(getString(R.string.home_action_classic, getString(R.string.home_medium_title))));
+                navigateToPuzzle(5, "Clássico · " + getString(R.string.home_medium_title)));
         binding.cardClassicHard.setOnClickListener(v ->
-                showToast(getString(R.string.home_action_classic, getString(R.string.home_hard_title))));
+                navigateToPuzzle(8, "Clássico · " + getString(R.string.home_hard_title)));
 
         binding.cardTimedHard.setOnClickListener(v ->
-                showToast(getString(R.string.home_action_timed, getString(R.string.home_timed_hard_title))));
+                navigateToPuzzle(8, "VS · " + getString(R.string.home_timed_hard_title)));
         binding.cardTimedMedium.setOnClickListener(v ->
-                showToast(getString(R.string.home_action_timed, getString(R.string.home_timed_medium_title))));
+                navigateToPuzzle(5, "VS · " + getString(R.string.home_timed_medium_title)));
         binding.cardTimedEasy.setOnClickListener(v ->
-                showToast(getString(R.string.home_action_timed, getString(R.string.home_timed_easy_title))));
+                navigateToPuzzle(3, "VS · " + getString(R.string.home_timed_easy_title)));
+    }
+
+    private void navigateToPuzzle(int creditsReward, String modeLabel) {
+        Bundle args = new Bundle();
+        args.putInt("creditsReward", creditsReward);
+        args.putString("modeLabel", modeLabel);
+        Navigation.findNavController(requireView())
+                .navigate(R.id.action_homeFragment_to_puzzleFragment, args);
     }
 
     private void observeUiState() {
@@ -132,10 +153,6 @@ public class HomeFragment extends Fragment {
 
         button.setBackgroundTintList(ColorStateList.valueOf(backgroundColor));
         button.setTextColor(textColor);
-    }
-
-    private void showToast(String message) {
-        Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show();
     }
 
     @Override
