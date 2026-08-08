@@ -38,3 +38,7 @@ google-services.json
 # Configuration cache
 .gradle/configuration-cache/
 
+
+# Graphify
+graphify-out/cost.json
+graphify-out/cache/
