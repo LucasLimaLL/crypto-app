@@ -1,0 +1,51 @@
+name: graphify-update
+
+# Atualiza o grafo de código deste repositório (graphify-out/) a cada push
+# em develop/main e avisa o grafo central em aifactory-squad.
+#
+# Secrets necessários (Settings → Secrets and variables → Actions):
+#   ANTHROPIC_API_KEY   — backend de extração do Graphify
+#   HUB_DISPATCH_TOKEN  — fine-grained PAT com "Actions: Read and write"
+#                         restrito ao repositório aifactory-squad
+#
+# Ver docs/plano-implementacao-graphify-squad-ai.md (Fase 1/4) no hub.
+
+on:
+  push:
+    branches: [develop, main]
+
+concurrency:
+  group: graphify-update
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Instalar Graphify
+        run: pip install graphifyy
+
+      - name: Atualizar grafo (por arquivo alterado no push)
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: graphify . --update --backend claude
+
+      - name: Commitar graphify-out/
+        run: |
+          git config user.name "graphify-bot"
+          git config user.email "actions@github.com"
+          git add graphify-out/
+          git commit -m "chore(graphify): update graph [skip ci]" || echo "sem mudança no grafo"
+          git push
+
+      - name: Notificar grafo central (aifactory-squad)
+        run: |
+          curl -sf -X POST \
+            -H "Authorization: token ${{ secrets.HUB_DISPATCH_TOKEN }}" \
+            -H "Accept: application/vnd.github+json" \
+            https://api.github.com/repos/LucasLimaLL/aifactory-squad/dispatches \
+            -d "{\"event_type\":\"graphify-sync\",\"client_payload\":{\"repo\":\"crypto-app\",\"ref\":\"${{ github.sha }}\"}}"
