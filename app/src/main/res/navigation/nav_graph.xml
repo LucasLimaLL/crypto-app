@@ -35,9 +35,9 @@
 
     <fragment
         android:id="@+id/puzzleFragment"
-        android:name="br.com.lucaslima.cryptogram.feature.puzzle.ui.PuzzleFragment"
+        android:name="br.com.lucaslima.cryptogram.feature.game.ui.GameFragment"
         android:label="Puzzle"
-        tools:layout="@layout/fragment_puzzle" />
+        tools:layout="@layout/fragment_game" />
 
     <fragment
         android:id="@+id/profileFragment"
